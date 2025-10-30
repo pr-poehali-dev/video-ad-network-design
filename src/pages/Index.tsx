@@ -31,9 +31,9 @@ const Index = () => {
   const { toast } = useToast();
 
   const stats = [
-    { label: 'Показы', value: '12.5M', growth: '+24%', icon: 'Eye' },
+    { label: 'Показы', value: '125M', growth: '+24%', icon: 'Eye' },
     { label: 'CTR', value: '3.8%', growth: '+12%', icon: 'MousePointerClick' },
-    { label: 'Выручка', value: '₽1.2M', growth: '+34%', icon: 'TrendingUp' },
+    { label: 'Выручка', value: '₽12M', growth: '+34%', icon: 'TrendingUp' },
     { label: 'Конверсия', value: '2.1%', growth: '+8%', icon: 'Target' },
   ];
 
@@ -362,7 +362,7 @@ const Index = () => {
                       <span className="text-sm text-muted-foreground">Средний доход издателя</span>
                       <Icon name="TrendingUp" size={16} className="text-green-400" />
                     </div>
-                    <div className="text-3xl font-bold">₽127,500</div>
+                    <div className="text-3xl font-bold">₽1,275,000</div>
                     <div className="text-xs text-green-400 mt-1">+42% к прошлому месяцу</div>
                   </div>
                   <div className="bg-background/50 backdrop-blur p-4 rounded-lg">
@@ -370,7 +370,7 @@ const Index = () => {
                       <span className="text-sm text-muted-foreground">Средний CPM</span>
                       <Icon name="DollarSign" size={16} className="text-primary" />
                     </div>
-                    <div className="text-3xl font-bold">₽185</div>
+                    <div className="text-3xl font-bold">₽1,850</div>
                     <div className="text-xs text-muted-foreground mt-1">На 38% выше рынка</div>
                   </div>
                   <div className="bg-background/50 backdrop-blur p-4 rounded-lg">
@@ -619,7 +619,7 @@ const Index = () => {
                 Готовы начать монетизацию?
               </CardTitle>
               <CardDescription className="text-lg">
-                Присоединяйтесь к 10,000+ издателям, которые уже зарабатывают с AdStream
+                Присоединяйтесь к 100,000+ издателям, которые уже зарабатывают с AdStream
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
