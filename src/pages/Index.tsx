@@ -322,11 +322,77 @@ const Index = () => {
         </div>
       </section>
 
+      <section className="py-20 px-6">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
+            <div>
+              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                <Icon name="Users" size={14} className="mr-1" />
+                Для издателей
+              </Badge>
+              <h2 className="text-4xl font-bold mb-6">
+                Начните зарабатывать на контенте
+                <span className="bg-gradient-to-r from-cyber to-electric bg-clip-text text-transparent"> уже сегодня</span>
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6">
+                AdStream автоматически размещает релевантную видеорекламу на вашем сайте, 
+                оптимизирует показы и максимизирует доход без вашего участия.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  { icon: 'Zap', text: 'Интеграция за 5 минут — один код на сайт' },
+                  { icon: 'TrendingUp', text: 'Автоматическая оптимизация CPM в реальном времени' },
+                  { icon: 'Shield', text: 'Только премиальные бренды и проверенная реклама' },
+                  { icon: 'Wallet', text: 'Выплаты каждую неделю без минимального порога' }
+                ].map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Icon name={item.icon as any} size={14} className="text-primary" />
+                    </div>
+                    <span className="text-muted-foreground">{item.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Card className="bg-gradient-to-br from-cyber/10 to-electric/10 border-primary/30">
+              <CardContent className="pt-6">
+                <div className="space-y-6">
+                  <div className="bg-background/50 backdrop-blur p-4 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Средний доход издателя</span>
+                      <Icon name="TrendingUp" size={16} className="text-green-400" />
+                    </div>
+                    <div className="text-3xl font-bold">₽127,500</div>
+                    <div className="text-xs text-green-400 mt-1">+42% к прошлому месяцу</div>
+                  </div>
+                  <div className="bg-background/50 backdrop-blur p-4 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Средний CPM</span>
+                      <Icon name="DollarSign" size={16} className="text-primary" />
+                    </div>
+                    <div className="text-3xl font-bold">₽185</div>
+                    <div className="text-xs text-muted-foreground mt-1">На 38% выше рынка</div>
+                  </div>
+                  <div className="bg-background/50 backdrop-blur p-4 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-muted-foreground">Fill Rate</span>
+                      <Icon name="Percent" size={16} className="text-primary" />
+                    </div>
+                    <div className="text-3xl font-bold">94%</div>
+                    <div className="text-xs text-muted-foreground mt-1">Монетизация трафика</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Всё для эффективной
+              Мощные инструменты
               <span className="bg-gradient-to-r from-cyber to-electric bg-clip-text text-transparent"> монетизации</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -626,13 +692,21 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="border-t border-border/40 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              © 2025 AdStream. Все права защищены
-            </p>
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-primary transition-colors">Политика конфиденциальности</a>
-              <a href="#" className="hover:text-primary transition-colors">Условия использования</a>
+          <div className="border-t border-border/40 mt-12 pt-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+              <p className="text-sm text-muted-foreground">
+                © 2025 AdStream. Все права защищены
+              </p>
+              <div className="flex gap-6 text-sm text-muted-foreground">
+                <a href="#" className="hover:text-primary transition-colors">Политика конфиденциальности</a>
+                <a href="#" className="hover:text-primary transition-colors">Условия использования</a>
+              </div>
+            </div>
+            <div className="text-center pt-6 border-t border-border/20">
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <Icon name="Shield" size={16} className="text-primary" />
+                <span>Сертифицирован IAB | MRC Accredited | GDPR Compliant</span>
+              </div>
             </div>
           </div>
         </div>
