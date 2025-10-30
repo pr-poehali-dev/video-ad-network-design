@@ -5,9 +5,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    website: '',
+    traffic: '',
+    phone: ''
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const { toast } = useToast();
 
   const stats = [
     { label: 'Показы', value: '12.5M', growth: '+24%', icon: 'Eye' },
@@ -73,6 +94,67 @@ const Index = () => {
     },
   ];
 
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Укажите имя';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Укажите email';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Некорректный email';
+    }
+
+    if (!formData.website.trim()) {
+      newErrors.website = 'Укажите адрес сайта';
+    } else if (!/^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/.test(formData.website)) {
+      newErrors.website = 'Некорректный URL';
+    }
+
+    if (!formData.traffic.trim()) {
+      newErrors.traffic = 'Укажите трафик';
+    } else if (isNaN(Number(formData.traffic)) || Number(formData.traffic) <= 0) {
+      newErrors.traffic = 'Укажите число больше 0';
+    }
+
+    if (formData.phone && !/^\+?[0-9]{10,15}$/.test(formData.phone.replace(/[\s()-]/g, ''))) {
+      newErrors.phone = 'Некорректный телефон';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (validateForm()) {
+      toast({
+        title: '✅ Заявка отправлена!',
+        description: `${formData.name}, мы свяжемся с вами в течение 24 часов`,
+      });
+      
+      setFormData({
+        name: '',
+        email: '',
+        website: '',
+        traffic: '',
+        phone: ''
+      });
+      setErrors({});
+      setIsDialogOpen(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-lg">
@@ -99,10 +181,90 @@ const Index = () => {
             ))}
           </div>
 
-          <Button className="bg-gradient-to-r from-cyber to-electric hover:opacity-90 transition-opacity">
-            <Icon name="Rocket" size={18} className="mr-2" />
-            Начать
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-gradient-to-r from-cyber to-electric hover:opacity-90 transition-opacity">
+                <Icon name="Rocket" size={18} className="mr-2" />
+                Начать
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[500px] bg-card border-border">
+              <DialogHeader>
+                <DialogTitle className="text-2xl">Подключить сайт</DialogTitle>
+                <DialogDescription>
+                  Заполните форму, и мы свяжемся с вами для подключения
+                </DialogDescription>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+                <div>
+                  <Label htmlFor="name">Имя *</Label>
+                  <Input
+                    id="name"
+                    placeholder="Иван Иванов"
+                    value={formData.name}
+                    onChange={(e) => handleInputChange('name', e.target.value)}
+                    className={errors.name ? 'border-red-500' : ''}
+                  />
+                  {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="ivan@example.com"
+                    value={formData.email}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className={errors.email ? 'border-red-500' : ''}
+                  />
+                  {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="website">Адрес сайта *</Label>
+                  <Input
+                    id="website"
+                    placeholder="https://example.com"
+                    value={formData.website}
+                    onChange={(e) => handleInputChange('website', e.target.value)}
+                    className={errors.website ? 'border-red-500' : ''}
+                  />
+                  {errors.website && <p className="text-xs text-red-500 mt-1">{errors.website}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="traffic">Ежемесячный трафик (визитов) *</Label>
+                  <Input
+                    id="traffic"
+                    type="number"
+                    placeholder="10000"
+                    value={formData.traffic}
+                    onChange={(e) => handleInputChange('traffic', e.target.value)}
+                    className={errors.traffic ? 'border-red-500' : ''}
+                  />
+                  {errors.traffic && <p className="text-xs text-red-500 mt-1">{errors.traffic}</p>}
+                </div>
+                
+                <div>
+                  <Label htmlFor="phone">Телефон</Label>
+                  <Input
+                    id="phone"
+                    placeholder="+7 (999) 123-45-67"
+                    value={formData.phone}
+                    onChange={(e) => handleInputChange('phone', e.target.value)}
+                    className={errors.phone ? 'border-red-500' : ''}
+                  />
+                  {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
+                </div>
+                
+                <Button type="submit" className="w-full bg-gradient-to-r from-cyber to-electric hover:opacity-90">
+                  <Icon name="Send" size={18} className="mr-2" />
+                  Отправить заявку
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </nav>
 
@@ -127,10 +289,14 @@ const Index = () => {
           </p>
 
           <div className="flex gap-4 justify-center animate-fade-in">
-            <Button size="lg" className="bg-gradient-to-r from-cyber to-electric hover:opacity-90">
-              <Icon name="Zap" size={20} className="mr-2" />
-              Подключить сайт
-            </Button>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button size="lg" className="bg-gradient-to-r from-cyber to-electric hover:opacity-90">
+                  <Icon name="Zap" size={20} className="mr-2" />
+                  Подключить сайт
+                </Button>
+              </DialogTrigger>
+            </Dialog>
             <Button size="lg" variant="outline" className="border-primary/30 hover:bg-primary/5">
               <Icon name="PlayCircle" size={20} className="mr-2" />
               Смотреть демо
@@ -391,10 +557,14 @@ const Index = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-to-r from-cyber to-electric hover:opacity-90">
-                <Icon name="Rocket" size={20} className="mr-2" />
-                Подключить сайт бесплатно
-              </Button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="lg" className="bg-gradient-to-r from-cyber to-electric hover:opacity-90">
+                    <Icon name="Rocket" size={20} className="mr-2" />
+                    Подключить сайт бесплатно
+                  </Button>
+                </DialogTrigger>
+              </Dialog>
               <Button size="lg" variant="outline" className="border-primary/30">
                 <Icon name="MessageCircle" size={20} className="mr-2" />
                 Связаться с нами
